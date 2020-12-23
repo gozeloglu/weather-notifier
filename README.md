@@ -77,7 +77,7 @@ If you select `weather.py` as the script file, the Python console will pop-up wh
 
 # Example
 
-![Example](https://github.com/gozeloglu/weather-notifier/example/example.jpg)
+![Example](/example/example.jpg)
 
 # Contributions
 
