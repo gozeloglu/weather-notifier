@@ -26,24 +26,8 @@ class Weather(Enum):
     MOON_FACE = "\U0001F31B"
     THERMOMETER = "\U0001F321"
 
-emojis = {
-    "sunny": "\U0001F31E",
-    "cloud": "\U00002601",
-    "heavy_rainy": "\U000026C8",
-    "cloud_rainy": "\U0001F327",
-    "cloud_snow": "\U0001F328",
-    "lighthing": "\U0001F329",
-    "foggy": "\U0001F32B",
-    "snow": "\U00002744",
-    "moon": "\U0001F319",
-    "moon_face": "\U0001F31B",
-    "thermometer": "\U0001F321",
-}
-
-
 def get_current_time_slot(sunrise, sunset, timezone):
     now = datetime.now().strftime("%H:%M")
-    print(now)
     sunrise = datetime.fromtimestamp(sunrise).strftime("%A, %B %d, %Y %H:%M:%S")
     sunset = datetime.fromtimestamp(sunset).strftime("%A, %B %d, %Y %H:%M:%S")
 
@@ -100,11 +84,11 @@ def parse_json(data):
     send_notification(emoji.value, weather, tempature)
 
 
-def get_weather_information(city):
+def get_weather_information():
     url = "http://api.openweathermap.org/data/2.5/weather?q=" + CITY + "&APPID=" + WEATHER_API_KEY + "&units=metric"
     res = requests.get(url)
     data = res.json()
     parse_json(data)
 
 
-get_weather_information("antalya")
+get_weather_information()
