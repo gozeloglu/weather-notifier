@@ -2,10 +2,11 @@
 
 # Requirements
 
+- `python3.x`
 - `requests`
 - `win10toast`
 
-You can install these libraries as follow:
+You can install libraries as follow:
 
 `$ pip install requests`
 
