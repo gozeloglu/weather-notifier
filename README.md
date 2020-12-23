@@ -75,6 +75,12 @@ Finally, you need to schedule a task by using **Task Scheduler** in Windows 10.
 
 If you select `weather.py` as the script file, the Python console will pop-up when the script is run. In order to block this pop-up console, we are using `weather.pyw` file. 
 
+# Example
+
+![Example](https://github.com/gozeloglu/weather-notifier/example/example.jpg)
+
 # Contributions
 
 Contributions are welcomed. If you face any issue or want to add a new feature, you can open an issue. 
+
+# LICENSE
