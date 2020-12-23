@@ -10,8 +10,8 @@ WEATHER_API_KEY = os.getenv('WEATHER_API_KEY')
 CITY = "Antalya"
 
 class TimeSlot(Enum):
-    MORNING = 1
-    EVENING = 2
+    MORNING = "\U0001F305"
+    EVENING = "\U0001F319"
 
 class Weather(Enum):
     SUNNY = "\U0001F31E"
@@ -22,55 +22,53 @@ class Weather(Enum):
     LIGHTHING = "\U0001F329"
     FOGGY = "\U0001F32B"
     SNOW = "\U00002744"
-    MOON = "\U0001F319"
     MOON_FACE = "\U0001F31B"
     THERMOMETER = "\U0001F321"
+    
 
 def get_current_time_slot(sunrise, sunset, timezone):
     now = datetime.now().strftime("%H:%M")
     sunrise = datetime.fromtimestamp(sunrise).strftime("%A, %B %d, %Y %H:%M:%S")
     sunset = datetime.fromtimestamp(sunset).strftime("%A, %B %d, %Y %H:%M:%S")
 
-    """sunrise_utc = (":".join(sunrise.split(" ")[-1].split(":")[:2]))
-    sunset_utc = (":".join(sunset.split(" ")[-1].split(":")[:2]))"""
-
     sunrise_utc = sunrise.split(" ")[-1].split(":")[:2]
     sunset_utc = sunset.split(" ")[-1].split(":")[:2]
 
+    # Morning 
     if int(now.split(":")[0]) >= int(sunrise_utc[0]) and int(now.split(":")[0]) < int(sunset_utc[0]):
-        return TimeSlot.MORNING
-    elif int(now.split(":")[0]) < int(sunrise_utc[0]) and int(now.split(":")[0]) >= int(sunset_utc[0]):
-        return TimeSlot.EVENING
+        return TimeSlot.MORNING.value
+    # Evening
+    elif int(now.split(":")[0]) < int(sunrise_utc[0]) or int(now.split(":")[0]) >= int(sunset_utc[0]):
+        return TimeSlot.EVENING.value
     else:
-        return TimeSlot.MORNING
+        return TimeSlot.EVENING.value
     
-def get_weather_emoji(time_slot, weather_id):
-    emoji = ""
+def get_weather_emoji(weather_id):
+    
     if weather_id < 300:
-        emoji = Weather.LIGHTHING.value
+        return Weather.LIGHTHING.value
     elif weather_id < 400:
-        emoji = Weather.CLOUD_RAINY.value
+        return Weather.CLOUD_RAINY.value
     elif weather_id < 600:
-        emoji = Weather.HEAVY_RAINY.value
+        return Weather.HEAVY_RAINY.value
     elif weather_id < 700:
-        emoji = Weather.SNOW.value
+        return Weather.SNOW.value
     elif weather_id < 800:
-        emoji = Weather.FOGGY.value
+        return Weather.FOGGY.value
     elif weather_id == 800:
-        emoji = Weather.SUNNY.value
+        return Weather.SUNNY.value
     elif weather_id < 900:
-        emoji = Weather.CLOUD.value
-    
-    if time_slot.EVENING == TimeSlot.EVENING:
-        emoji += Weather.MOON.value
-    else:
-        emoji += Weather.SUNNY.value
-    return emoji
+        return Weather.CLOUD.value
+    return Weather.SUNNY.value
 
-def send_notification(weather_emoji, weather_description, tempature):
+def send_notification(weather_emoji, time_slot_emoji, weather_description, tempature):
     now = datetime.now().strftime("%H:%M")
     toaster = ToastNotifier()
-    message = "City: " + CITY + "\nTime: " + now + "\nDescription: " + weather_description + "\nTempature: " + tempature + Weather.THERMOMETER.value + "  " + weather_emoji
+    city = "City: " + CITY + "\n"
+    time = "Time: " + now + time_slot_emoji + "\n"
+    description = "Description: " + weather_description + "  " + weather_emoji + "\n"
+    temp = "Tempature: " + tempature + "°C " + Weather.THERMOMETER.value
+    message = city + time + description + temp 
     toaster.show_toast("Weather Forecast", message,
                    icon_path=None,
                    duration=10,
@@ -86,8 +84,8 @@ def parse_json(data):
     timezone = data["timezone"]
 
     time_slot = get_current_time_slot(sunrise, sunset, timezone)
-    emoji = get_weather_emoji(time_slot, weather_id)
-    send_notification(emoji, weather, tempature)
+    emoji = get_weather_emoji(weather_id)
+    send_notification(emoji, time_slot, weather, tempature)
 
 
 def get_weather_information():
