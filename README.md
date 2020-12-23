@@ -84,3 +84,5 @@ If you select `weather.py` as the script file, the Python console will pop-up wh
 Contributions are welcomed. If you face any issue or want to add a new feature, you can open an issue. 
 
 # LICENSE
+
+[MIT](LICENSE)
