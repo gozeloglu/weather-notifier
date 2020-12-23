@@ -7,7 +7,7 @@ from enum import Enum
 
 
 WEATHER_API_KEY = os.getenv('WEATHER_API_KEY')
-CITY = "Antalya"
+CITY = os.getenv("CITY")
 
 class TimeSlot(Enum):
     MORNING = "\U0001F305"
